@@ -1,0 +1,133 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Hanan's Beats";
+}
+
+<style>
+    :root {
+        --primary-color: #6c5ce7;
+        --secondary-color: #a29bfe;
+        --bg-color: #0f0c1b;
+        --card-bg: #1e1b2e;
+        --text-color: #ffffff;
+    }
+
+    body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .main-container {
+        max-width: 900px;
+        width: 90%;
+        margin: 40px auto;
+        text-align: center;
+        background: var(--card-bg);
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Target for JavaScript Animation */
+    h1#animated-heading {
+        font-size: 2.8rem;
+        margin-bottom: 10px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        display: inline-block;
+        /* Perspective gives the 3D rotation room to breathe */
+        perspective: 400px;
+    }
+
+    .subtitle {
+        color: var(--secondary-color);
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+    .video-wrapper {
+        position: relative;
+        padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+        padding-top: 25px;
+        height: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 8px 24px rgba(108, 92, 231, 0.3);
+        border: 2px solid var(--primary-color);
+    }
+
+    .video-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    footer {
+        margin-top: 40px;
+        font-size: 0.9rem;
+        color: #666;
+    }
+</style>
+
+<div class="main-container">
+    <h1 id="animated-heading">Hanan Yasin's Soundspace</h1>
+    <p class="subtitle">Current Favorite Track</p>
+
+    <div class="video-wrapper">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/VHoT4N43jK8?si=dnV2q54lWuuYek1b" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    </div>
+
+    <footer>
+        <p>&copy; @DateTime.Now.Year - Crafted by Hanan Yasin for ASP.NET Core</p>
+    </footer>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const heading = document.getElementById("animated-heading");
+        const text = heading.innerText;
+        heading.innerHTML = "";
+
+        // Break the text into individual span characters so we can animate them dynamically
+        for (let i = 0; i < text.length; i++) {
+            let char = text[i] === " " ? "&nbsp;" : text[i];
+            heading.innerHTML += `<span style="display:inline-block; transition: transform 0.3s ease;">${char}</span>`;
+        }
+
+        const letters = heading.querySelectorAll("span");
+        let index = 0;
+
+        // Infinite loop function using setInterval
+        setInterval(() => {
+            // Pick the current letter
+            let currentLetter = letters[index];
+
+            // Apply a cool 3D flip and color flash animation effect
+            currentLetter.style.transform = "rotateX(360deg) scale(1.2)";
+            currentLetter.style.color = "#a29bfe";
+
+            // Reset the letter back to normal after the transition finishes
+            setTimeout(() => {
+                currentLetter.style.transform = "rotateX(0deg) scale(1)";
+                currentLetter.style.color = "#ffffff";
+            }, 300);
+
+            // Move to the next letter, looping back to 0 when we hit the end
+            index = (index + 1) % letters.length;
+
+        }, 120); // Controls the speed of the wave animation (120ms per letter)
+    });
+</script>
